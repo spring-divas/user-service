@@ -14,6 +14,7 @@ import org.spring.divas.userservice.common.enums.UserRole;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     @Column(name = "id")
     private Long id;
