@@ -21,7 +21,10 @@ repositories {
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.48")
     annotationProcessor("org.projectlombok:lombok:1.18.48")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
+    implementation("org.mapstruct:mapstruct:1.6.3")
     implementation("jakarta.persistence:jakarta.persistence-api:4.0.0-M7")
     implementation("jakarta.validation:jakarta.validation-api:4.0.0-M1")
     implementation("org.springframework.boot:spring-boot-starter")
