@@ -2,6 +2,7 @@ package org.spring.divas.userservice.feature.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.spring.divas.userservice.common.enums.UserRole;
@@ -22,6 +23,6 @@ public class UserCreateDto {
     @Size(min = 8, max = 255)
     private String password;
 
-    @NotBlank
+    @NotNull
     private UserRole role;
 }
