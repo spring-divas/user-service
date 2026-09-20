@@ -4,15 +4,15 @@ import java.util.List;
 
 public interface UserService {
 
-        UserResponseDto create(UserCreateDto dto);
+    UserResponseDto create(UserCreateDto dto);
 
-        UserResponseDto findById(Long id);
+    UserResponseDto findById(Long id);
 
-        List<UserResponseDto> findAll();
+    List<UserResponseDto> findAll();
 
-        UserResponseDto update(Long id, UserUpdateDto dto);
+    UserResponseDto update(Long id, UserUpdateDto dto);
 
-        UserResponseDto updatePassword(Long id, ChangePasswordDto dto);
+    UserResponseDto updatePassword(Long id, ChangePasswordDto dto);
 
-        void delete(Long id);
+    void delete(Long id);
 }
