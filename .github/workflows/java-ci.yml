@@ -10,8 +10,8 @@ on:
       - "gradle/**"
       - "gradlew"
       - "gradlew.bat"
-      - "checks.xml"
-      - ".github/workflows/ci.yml"
+      - "checkstyle/checks.xml"
+      - ".github/workflows/java-ci.yml"
   push:
     branches:
       - main
@@ -23,8 +23,8 @@ on:
       - "gradle/**"
       - "gradlew"
       - "gradlew.bat"
-      - "checks.xml"
-      - ".github/workflows/ci.yml"
+      - "checkstyle/checks.xml"
+      - ".github/workflows/java-ci.yml"
 
 concurrency:
   group: ci-${{ github.ref }}
