@@ -40,6 +40,7 @@ dependencies {
 checkstyle {
     toolVersion = "13.7.0"
     configFile = file("checkstyle/checks.xml")
+    maxWarnings = 0
 }
 
 tasks.withType<Test> {
