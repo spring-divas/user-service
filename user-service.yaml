@@ -15,7 +15,7 @@ spec:
       containers:
         - name: user-service-container
           image: user-service:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           envFrom:
             - secretRef:
                 name: user-secret

@@ -14,6 +14,8 @@ kind: Deployment
 metadata:
   name: user-db
 spec:
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: user-db
