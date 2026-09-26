@@ -19,7 +19,7 @@ public class VenueManagerServiceImpl implements VenueManagerService {
     @Transactional
     public void create(VenueManagerCreateDto dto) {
         int status = repository.insertIfNotExists(mapper.toEntity(dto));
-        if (status != 0) {
+        if (status == 0) {
             throw new EntityExistsException();
         }
     }
