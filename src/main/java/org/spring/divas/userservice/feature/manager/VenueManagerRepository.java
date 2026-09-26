@@ -17,7 +17,7 @@ public interface VenueManagerRepository extends JpaRepository<VenueManager, Venu
     @Query(value =
             """
             INSERT INTO venue_manager (user_id, venue_id, manager_level)
-            VALUES (:#{#entity.userId}, :#{#entity.venueId}, :#{#entity.managerLevel.name()})
+            VALUES (:#{#entity.userId}, :#{#entity.venueId}, :#{#entity.managerLevel})
             ON CONFLICT (user_id, venue_id) DO NOTHING
             """, nativeQuery = true)
     int insertIfNotExists(@Param("entity") VenueManager entity);
