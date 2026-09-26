@@ -1,15 +1,11 @@
 package org.spring.divas.userservice.feature.manager;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-@Component
-public class VenueManagerMapper {
+@Mapper(componentModel = "spring")
+public interface VenueManagerMapper {
 
-    public VenueManager toEntity(VenueManagerCreateDto dto) {
-        return VenueManager.builder()
-                .userId(dto.getUserId())
-                .venueId(dto.getVenueId())
-                .managerLevel(dto.getManagerLevel())
-                .build();
-    }
+    VenueManager toEntity(VenueManagerCreateDto request);
+
+    VenueManagerResponseDto toResponseDto(VenueManager user);
 }

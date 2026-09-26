@@ -21,7 +21,7 @@ public class VenueManagerController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<VenueManager> findAllByUserId(@PathVariable Long userId) {
+    public List<VenueManagerResponseDto> findAllByUserId(@PathVariable Long userId) {
         return service.findAllByUserId(userId);
     }
 
