@@ -18,7 +18,7 @@ public class VenueManagerServiceImpl implements VenueManagerService {
     @Override
     @Transactional
     public void create(VenueManagerCreateDto dto) {
-        if(repository.existsById(new VenueManagerId(dto.getUserId(), dto.getVenueId()))) {
+        if (repository.existsById(new VenueManagerId(dto.getUserId(), dto.getVenueId()))) {
             throw new EntityExistsException();
         }
         repository.save(mapper.toEntity(dto));
