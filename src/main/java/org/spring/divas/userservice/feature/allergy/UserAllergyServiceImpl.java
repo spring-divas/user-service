@@ -15,9 +15,6 @@ public class UserAllergyServiceImpl implements UserAllergyService {
     @Override
     @Transactional
     public void create(Long userId, Long allergenId) {
-        if (repository.existsById(new UserAllergyId(userId, allergenId))) {
-            return;
-        }
         repository.save(new UserAllergy(userId, allergenId));
     }
 
