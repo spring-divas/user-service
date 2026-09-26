@@ -1,5 +1,6 @@
 package org.spring.divas.userservice.feature.manager;
 
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,10 @@ public class VenueManagerServiceImpl implements VenueManagerService {
     @Override
     @Transactional
     public void create(VenueManagerCreateDto dto) {
-        repository.insertIfNotExists(mapper.toEntity(dto));
+        int status = repository.insertIfNotExists(mapper.toEntity(dto));
+        if (status != 0) {
+            throw new EntityExistsException();
+        }
     }
 
     @Override
