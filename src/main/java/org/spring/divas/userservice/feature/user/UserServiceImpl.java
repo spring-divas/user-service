@@ -1,6 +1,7 @@
 package org.spring.divas.userservice.feature.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +12,10 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+
     private final UserMapper mapper;
+
+    private final PasswordEncoder encoder;
 
     @Override
     @Transactional
@@ -47,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDto updatePassword(Long id, ChangePasswordDto dto) {
         User user = repository.findById(id).orElseThrow();
-        user.setPassword(dto.getNewPassword());
+        user.setPassword(encoder.encode(dto.getNewPassword()));
         return mapper.toResponseDto(repository.save(user));
     }
 
