@@ -49,10 +49,10 @@ spec:
           secret:
             secretName: user-secret
             items:
-              - key: private.perm
-                path: private.perm
-              - key: public.perm
-                path: public.perm
+              - key: private.pem
+                path: private.pem
+              - key: public.pem
+                path: public.pem
 
 ---
 apiVersion: v1
