@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.interfaces.RSAPublicKey;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,6 +23,6 @@ public class AuthController {
 
     @GetMapping("/public-key")
     public String publicKey() {
-        return publicKey.getAlgorithm();
+        return Base64.getEncoder().encodeToString(publicKey.getEncoded());
     }
 }
