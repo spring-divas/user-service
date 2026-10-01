@@ -41,3 +41,4 @@ out/
 *.env
 *secret.yaml
 *secret.yml
+*.pem

@@ -15,10 +15,14 @@ spec:
       containers:
         - name: user-service-container
           image: user-service:latest
-          imagePullPolicy: Always
+          imagePullPolicy: Never
           envFrom:
             - secretRef:
                 name: user-secret
+          volumeMounts:
+            - name: jwt-keys
+              mountPath: /app/config/jwt
+              readOnly: true
           resources:
             requests:
               cpu: 100m
@@ -40,6 +44,16 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
+      volumes:
+        - name: jwt-keys
+          secret:
+            secretName: user-secret
+            items:
+              - key: private.pem
+                path: private.pem
+              - key: public.pem
+                path: public.pem
+
 ---
 apiVersion: v1
 kind: Service
