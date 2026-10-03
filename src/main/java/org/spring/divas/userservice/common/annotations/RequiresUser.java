@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("authentication.name == '{userId}'")
+@PreAuthorize("authentication.name == T(java.lang.String).valueOf({userId})")
 public @interface RequiresUser {
 
-    long userId();
+    String userId();
 }

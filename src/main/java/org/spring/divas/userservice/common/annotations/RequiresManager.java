@@ -11,12 +11,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @PreAuthorize(
-        "hasRole('MANAGER') && "
-                + "@managerAuthorization.isAllowed(authentication, {venueId}, {level})"
+        "hasRole('MANAGER') && " +
+                "@managerAuthorization.isAllowed(authentication, {venueId}, {level})"
 )
 public @interface RequiresManager {
 
-    long venueId();
+    String venueId();
 
     ManagerRole level();
 }

@@ -12,7 +12,8 @@ import java.util.List;
 @Component("managerAuthorization")
 public class ManagerAuthorization {
 
-    public boolean isAllowed(Authentication auth, Long venueId, ManagerRole level) {
+    public boolean isAllowed(Authentication auth, String id, ManagerRole level) {
+        Long venueId = Long.parseLong(id);
         List<String> roles = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();

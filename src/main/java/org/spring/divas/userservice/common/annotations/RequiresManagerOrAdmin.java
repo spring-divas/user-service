@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 )
 public @interface RequiresManagerOrAdmin {
 
-    long venueId();
+    String venueId();
 
     ManagerRole level();
 }
