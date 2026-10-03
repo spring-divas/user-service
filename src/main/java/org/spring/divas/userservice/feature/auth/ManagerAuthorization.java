@@ -18,8 +18,9 @@ public class ManagerAuthorization {
                 .toList();
         for (String str : roles) {
             VenueManagerRole role = VenueManagerRole.fromString(str);
-            if (role == null || !venueId.equals(role.getVenueId()))
+            if (role == null || !venueId.equals(role.getVenueId())) {
                 continue;
+            }
             return switch (role.getLevel()) {
                 case OWNER -> true;
                 case SENIOR -> level != ManagerRole.OWNER;

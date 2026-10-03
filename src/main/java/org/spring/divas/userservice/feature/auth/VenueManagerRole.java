@@ -20,8 +20,9 @@ public class VenueManagerRole {
     public static VenueManagerRole fromString(String str) {
         try {
             String[] parts = str.split(" ");
-            if (parts.length != 2)
+            if (parts.length != 2) {
                 return null;
+            }
             ManagerRole parsedLevel = ManagerRole.valueOf(parts[0]);
             Long parsedVenueId = Long.parseLong(parts[1]);
             return new VenueManagerRole(parsedLevel, parsedVenueId);
