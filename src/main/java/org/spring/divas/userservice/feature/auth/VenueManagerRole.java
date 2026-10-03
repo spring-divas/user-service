@@ -3,6 +3,7 @@ package org.spring.divas.userservice.feature.auth;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.spring.divas.userservice.common.enums.ManagerRole;
+import org.spring.divas.userservice.feature.manager.VenueManager;
 
 @Getter
 @RequiredArgsConstructor
@@ -12,8 +13,8 @@ public class VenueManagerRole {
 
     private final Long venueId;
 
-    public String toString() {
-        return level + " " + venueId;
+    public static String toString(VenueManager manager) {
+        return manager.getManagerLevel() + " " + manager.getVenueId();
     }
 
     public static VenueManagerRole fromString(String str) {

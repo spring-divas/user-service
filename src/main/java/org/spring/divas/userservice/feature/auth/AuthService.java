@@ -46,8 +46,7 @@ public class AuthService {
             case MANAGER -> Stream.concat(
                     Stream.of(UserRole.MANAGER.name()),
                     managerRepository.findByUserId(user.getId()).stream()
-                            .map(manager -> manager.getManagerLevel()
-                                    + " " + manager.getVenueId())
+                            .map(VenueManagerRole::toString)
             ).toList();
         };
     }
