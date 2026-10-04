@@ -11,13 +11,15 @@ public interface VenueManagerRepository extends JpaRepository<VenueManager, Venu
 
     List<VenueManager> findByUserId(Long userId);
 
+    List<VenueManager> findByUserIdAndVenueId(Long userId, Long venueId);
+
     void deleteByUserIdAndVenueId(Long userId, Long venueId);
 
     @Modifying
     @Query(value =
             """
             INSERT INTO venue_manager (user_id, venue_id, manager_level)
-            VALUES (:#{#entity.userId}, :#{#entity.venueId}, :#{#entity.managerLevel})
+            VALUES (:#{#entity.userId}, :#{#entity.venueId}, :#{#entity.managerLevel.name()})
             ON CONFLICT (user_id, venue_id) DO NOTHING
             """, nativeQuery = true)
     int insertIfNotExists(@Param("entity") VenueManager entity);

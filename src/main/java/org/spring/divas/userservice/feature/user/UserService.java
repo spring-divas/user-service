@@ -1,10 +1,12 @@
 package org.spring.divas.userservice.feature.user;
 
+import org.spring.divas.userservice.common.enums.UserRole;
+
 import java.util.List;
 
 public interface UserService {
 
-    UserResponseDto create(UserCreateDto dto);
+    UserResponseDto create(UserCreateDto dto, UserRole role);
 
     UserResponseDto findById(Long id);
 
