@@ -1,6 +1,7 @@
 package org.spring.divas.userservice.feature.user;
 
 import lombok.RequiredArgsConstructor;
+import org.spring.divas.userservice.common.enums.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +20,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto create(UserCreateDto dto) {
-        User savedUser = repository.save(mapper.toEntity(dto));
-        return mapper.toResponseDto(savedUser);
+    public UserResponseDto create(UserCreateDto dto, UserRole role) {
+        User user = mapper.toEntity(dto);
+        user.setRole(role);
+        return mapper.toResponseDto(repository.save(user));
     }
 
     @Override

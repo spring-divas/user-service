@@ -8,6 +8,7 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "role", ignore = true)
     @Mapping(target = "password", source = "password", qualifiedByName = "encodePassword")
     User toEntity(UserCreateDto request);
 
