@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @PreAuthorize(
-        "hasRole('ADMIN') || " +
-                "authentication.name == T(java.lang.String).valueOf({userId})"
+        "hasRole('ADMIN') || "
+                + "authentication.name == T(java.lang.String).valueOf({userId})"
 )
 public @interface RequiresUserOrAdmin {
 

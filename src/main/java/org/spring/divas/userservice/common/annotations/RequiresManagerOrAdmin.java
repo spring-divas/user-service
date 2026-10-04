@@ -11,9 +11,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @PreAuthorize(
-        "hasRole('ADMIN') || " +
-                "(hasRole('MANAGER') && " +
-                "@managerAuthorization.isAllowed(authentication, {venueId}, {level}))"
+        "hasRole('ADMIN') || "
+                + "(hasRole('MANAGER') && "
+                + "@managerAuthorization.isAllowed(authentication, {venueId}, {level}))"
 )
 public @interface RequiresManagerOrAdmin {
 
