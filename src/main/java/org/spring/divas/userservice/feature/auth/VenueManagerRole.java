@@ -19,6 +19,7 @@ public class VenueManagerRole {
 
     public static VenueManagerRole fromString(String str) {
         try {
+            str = str.substring("ROLE_".length());
             String[] parts = str.split(" ");
             if (parts.length != 2) {
                 return null;
