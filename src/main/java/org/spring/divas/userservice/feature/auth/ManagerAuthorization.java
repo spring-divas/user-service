@@ -23,8 +23,7 @@ public class ManagerAuthorization {
                 continue;
             }
             return switch (role.getLevel()) {
-                case OWNER -> true;
-                case SENIOR -> level != ManagerRole.OWNER;
+                case SENIOR -> true;
                 case JUNIOR -> level == ManagerRole.JUNIOR;
             };
         }
