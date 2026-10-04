@@ -11,6 +11,8 @@ public interface VenueManagerRepository extends JpaRepository<VenueManager, Venu
 
     List<VenueManager> findByUserId(Long userId);
 
+    List<VenueManager> findByUserIdAndVenueId(Long userId, Long venueId);
+
     void deleteByUserIdAndVenueId(Long userId, Long venueId);
 
     @Modifying

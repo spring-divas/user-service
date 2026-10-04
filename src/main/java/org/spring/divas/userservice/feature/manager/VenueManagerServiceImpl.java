@@ -26,8 +26,8 @@ public class VenueManagerServiceImpl implements VenueManagerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<VenueManagerResponseDto> findAllByUserId(Long userId) {
-        return repository.findByUserId(userId)
+    public List<VenueManagerResponseDto> findAllByUserAndVenueId(Long userId, Long venueId) {
+        return repository.findByUserIdAndVenueId(userId, venueId)
                 .stream()
                 .map(mapper::toResponseDto)
                 .toList();

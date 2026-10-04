@@ -6,7 +6,7 @@ public interface VenueManagerService {
 
     void create(VenueManagerCreateDto dto);
 
-    List<VenueManagerResponseDto> findAllByUserId(Long userId);
+    List<VenueManagerResponseDto> findAllByUserAndVenueId(Long userId, Long venueId);
 
     void update(VenueManagerUpdateDto dto);
 
