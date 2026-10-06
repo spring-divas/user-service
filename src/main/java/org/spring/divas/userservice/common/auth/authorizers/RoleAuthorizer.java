@@ -1,20 +1,19 @@
-package org.spring.divas.userservice.common.auth.aspects;
+package org.spring.divas.userservice.common.auth.authorizers;
 
+import lombok.RequiredArgsConstructor;
 import org.spring.divas.userservice.common.enums.UserRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 
-public abstract class RoleValidator<A extends Annotation> implements CheckValidator<A> {
+@RequiredArgsConstructor
+abstract class RoleAuthorizer extends Authorizer {
+
+    private final Authentication auth;
 
     @Override
-    public boolean validate(A annotation) {
-        Authentication auth = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
+    public boolean passes() {
         if (auth == null || !auth.isAuthenticated()) {
             return false;
         }
@@ -22,6 +21,11 @@ public abstract class RoleValidator<A extends Annotation> implements CheckValida
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         return roles.contains("ROLE_" + getUserRole());
+    }
+
+    @Override
+    public List<String> getErrorMsg() {
+        return List.of("User does not have role: " + getUserRole());
     }
 
     protected abstract UserRole getUserRole();
