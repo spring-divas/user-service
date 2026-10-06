@@ -1,14 +1,14 @@
-package org.spring.divas.userservice.common.annotations;
+package org.spring.divas.userservice.common.auth.annotations;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.spring.divas.userservice.common.auth.aspects.CustomerValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+@Check(validator = CustomerValidator.class)
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("hasRole('ADMIN')")
-public @interface RequiresAdmin {
+public @interface IsCustomer {
 }
