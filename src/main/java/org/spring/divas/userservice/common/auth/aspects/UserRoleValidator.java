@@ -1,6 +1,6 @@
 package org.spring.divas.userservice.common.auth.aspects;
 
-import org.spring.divas.userservice.common.auth.annotations.IsTheUser;
+import org.spring.divas.userservice.common.auth.annotations.RequiresTheUser;
 import org.spring.divas.userservice.common.enums.UserRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class UserRoleValidator implements CheckValidator<IsTheUser> {
+public class UserRoleValidator implements CheckValidator<RequiresTheUser> {
 
     @Override
-    public boolean validate(IsTheUser annotation) {
+    public boolean validate(RequiresTheUser annotation) {
         Authentication auth = SecurityContextHolder
                 .getContext()
                 .getAuthentication();

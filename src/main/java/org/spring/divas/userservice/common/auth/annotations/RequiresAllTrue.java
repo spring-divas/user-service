@@ -1,16 +1,16 @@
 package org.spring.divas.userservice.common.auth.annotations;
 
-import org.spring.divas.userservice.common.auth.aspects.UserValidator;
+import org.spring.divas.userservice.common.auth.aspects.AllTrueValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Check(validator = UserValidator.class)
+@Check(validator = AllTrueValidator.class)
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IsTheUser {
+public @interface RequiresAllTrue {
 
-    String userId();
+    Check[] value();
 }

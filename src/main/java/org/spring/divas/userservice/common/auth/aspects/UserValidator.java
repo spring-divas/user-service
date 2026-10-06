@@ -1,6 +1,6 @@
 package org.spring.divas.userservice.common.auth.aspects;
 
-import org.spring.divas.userservice.common.auth.annotations.IsTheUser;
+import org.spring.divas.userservice.common.auth.annotations.RequiresTheUser;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -9,12 +9,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserValidator implements CheckValidator<IsTheUser> {
+public class UserValidator implements CheckValidator<RequiresTheUser> {
 
     private final ExpressionParser parser = new SpelExpressionParser();
 
     @Override
-    public boolean validate(IsTheUser annotation) {
+    public boolean validate(RequiresTheUser annotation) {
         Authentication auth = SecurityContextHolder
                 .getContext()
                 .getAuthentication();

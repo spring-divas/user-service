@@ -1,7 +1,7 @@
 package org.spring.divas.userservice.common.auth.aspects;
 
 import lombok.RequiredArgsConstructor;
-import org.spring.divas.userservice.common.auth.annotations.AllTrue;
+import org.spring.divas.userservice.common.auth.annotations.RequiresAllTrue;
 import org.spring.divas.userservice.common.auth.annotations.Check;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -10,12 +10,12 @@ import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
-public class AllTrueValidator implements CheckValidator<AllTrue> {
+public class AllTrueValidator implements CheckValidator<RequiresAllTrue> {
 
     private final ApplicationContext applicationContext;
 
     @Override
-    public boolean validate(AllTrue annotation) {
+    public boolean validate(RequiresAllTrue annotation) {
         return Arrays.stream(annotation.value())
                 .allMatch(this::validateCheck);
     }

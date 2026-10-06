@@ -1,6 +1,6 @@
 package org.spring.divas.userservice.common.auth.aspects;
 
-import org.spring.divas.userservice.common.auth.annotations.IsManager;
+import org.spring.divas.userservice.common.auth.annotations.RequiresManager;
 import org.spring.divas.userservice.common.enums.ManagerRole;
 import org.spring.divas.userservice.feature.auth.VenueManagerRole;
 import org.springframework.expression.Expression;
@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-public class ManagerValidator implements CheckValidator<IsManager> {
+public class ManagerValidator implements CheckValidator<RequiresManager> {
 
     private final ExpressionParser parser = new SpelExpressionParser();
 
     @Override
-    public boolean validate(IsManager annotation) {
+    public boolean validate(RequiresManager annotation) {
         Authentication auth = SecurityContextHolder
                 .getContext()
                 .getAuthentication();
