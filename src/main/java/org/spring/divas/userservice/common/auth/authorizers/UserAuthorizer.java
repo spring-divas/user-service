@@ -14,7 +14,7 @@ public class UserAuthorizer extends Authorizer {
 
     @Override
     public boolean passes() {
-        if (auth == null || auth.isAuthenticated()) {
+        if (auth == null || !auth.isAuthenticated()) {
             return false;
         }
         Long actualUserId = Long.parseLong(auth.getName());
