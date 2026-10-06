@@ -1,6 +1,5 @@
 package org.spring.divas.userservice.feature.allergy;
 
-import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.spring.divas.userservice.common.auth.AuthChecker;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class UserAllergyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestParam Long userId, @RequestParam Long allergenId) throws AuthException {
+    public void create(@RequestParam Long userId, @RequestParam Long allergenId) {
         AuthChecker.require(either(isAdmin(), both(isCustomer(), isUser(userId))));
         userAllergyService.create(userId, allergenId);
     }

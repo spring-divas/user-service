@@ -1,6 +1,5 @@
 package org.spring.divas.userservice.feature.manager;
 
-import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.spring.divas.userservice.common.auth.AuthChecker;
@@ -23,7 +22,7 @@ public class VenueManagerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody VenueManagerCreateDto dto) throws AuthException {
+    public void create(@Valid @RequestBody VenueManagerCreateDto dto) {
         AuthChecker.require(either(isAdmin(), isManager(dto.getVenueId(), ManagerRole.SENIOR)));
         service.create(dto);
     }
