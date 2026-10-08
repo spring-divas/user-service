@@ -13,6 +13,10 @@ public class UserUpdateDto {
     private String name;
 
     @NotBlank
+    @Size(max = 100)
+    private String surname;
+
+    @NotBlank
     @Email
     @Size(max = 255)
     private String email;
