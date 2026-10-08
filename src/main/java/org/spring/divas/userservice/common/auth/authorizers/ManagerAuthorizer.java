@@ -1,25 +1,35 @@
-package org.spring.divas.userservice.feature.auth;
+package org.spring.divas.userservice.common.auth.authorizers;
 
 import lombok.RequiredArgsConstructor;
 import org.spring.divas.userservice.common.enums.ManagerRole;
+import org.spring.divas.userservice.feature.auth.VenueManagerRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
-@Component("managerAuthorization")
-public class ManagerAuthorization {
+public class ManagerAuthorizer extends Authorizer {
 
-    public boolean isAllowed(Authentication auth, String id, ManagerRole level) {
-        Long venueId = Long.parseLong(id);
+    private final Authentication auth;
+
+    private final Long venueId;
+
+    private final ManagerRole level;
+
+
+    @Override
+    public boolean passes() {
+        if (auth == null || !auth.isAuthenticated()) {
+            return false;
+        }
         List<String> roles = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         for (String str : roles) {
             VenueManagerRole role = VenueManagerRole.fromString(str);
-            if (role == null || !venueId.equals(role.getVenueId())) {
+            if (role == null || !Objects.equals(venueId, role.getVenueId())) {
                 continue;
             }
             return switch (role.getLevel()) {
@@ -28,5 +38,10 @@ public class ManagerAuthorization {
             };
         }
         return false;
+    }
+
+    @Override
+    public List<String> getErrorMsg() {
+        return List.of("User does not have manager role: " + level + " for venue " + venueId);
     }
 }
