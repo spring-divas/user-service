@@ -20,13 +20,13 @@ public class User {
 
     @NotBlank
     @Size(max = 100)
-    @Column(name = "name", nullable = false, length = 100)
-    private String name;
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
 
     @NotBlank
     @Size(max = 100)
-    @Column(name = "surname", nullable = false, length = 100)
-    private String surname;
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
 
     @NotBlank
     @Email

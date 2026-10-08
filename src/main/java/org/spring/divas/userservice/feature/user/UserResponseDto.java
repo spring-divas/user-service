@@ -8,9 +8,9 @@ public class UserResponseDto {
 
     private Long id;
 
-    private String name;
+    private String firstName;
 
-    private String surname;
+    private String lastName;
 
     private String email;
 
