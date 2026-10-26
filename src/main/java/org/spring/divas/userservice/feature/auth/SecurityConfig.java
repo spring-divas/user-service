@@ -37,12 +37,12 @@ public class SecurityConfig {
                         .requestMatchers("**").permitAll()
                         .anyRequest().authenticated()
                 )
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/actuator/**").permitAll()
-//                        .requestMatchers("/auth/**").permitAll()
-//                        .requestMatchers(POST, "/user/customer").permitAll()
-//                        .anyRequest().authenticated()
-//                )
+                // .authorizeHttpRequests(auth -> auth
+                //         .requestMatchers("/actuator/**").permitAll()
+                //         .requestMatchers("/auth/**").permitAll()
+                //         .requestMatchers(POST, "/user/customer").permitAll()
+                //         .anyRequest().authenticated()
+                // )
                 .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()))
                 .build();
     }
