@@ -10,6 +10,7 @@ val mapstructVersion = "1.6.3"
 val lombokMapstructBindingVersion = "0.2.0"
 val postgresqlVersion = "42.7.8"
 val h2Version = "2.3.232"
+val logbackVersion = "9.0"
 val checkstyleVersion = "13.7.0"
 
 group = "org.spring.divas"
@@ -41,6 +42,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation("org.springframework.boot:spring-boot-starter-aspectj")
+    implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
+
+    implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
 
     runtimeOnly("org.postgresql:postgresql:$postgresqlVersion")
 

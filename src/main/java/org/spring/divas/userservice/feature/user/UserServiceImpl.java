@@ -1,5 +1,6 @@
 package org.spring.divas.userservice.feature.user;
 
+import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import org.spring.divas.userservice.common.enums.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    @Observed(name = "user.get", contextualName = "get-user")
     public UserResponseDto findById(Long id) {
         return mapper.toResponseDto(repository.findById(id).orElseThrow());
     }
