@@ -19,8 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.interfaces.RSAPublicKey;
 
-import static org.springframework.http.HttpMethod.POST;
-
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity
@@ -36,11 +34,15 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(POST, "/user/customer").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                // .authorizeHttpRequests(auth -> auth
+                //         .requestMatchers("/actuator/**").permitAll()
+                //         .requestMatchers("/auth/**").permitAll()
+                //         .requestMatchers(POST, "/user/customer").permitAll()
+                //         .anyRequest().authenticated()
+                // )
                 .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()))
                 .build();
     }
