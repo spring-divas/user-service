@@ -17,6 +17,8 @@ spec:
           image: user-service:latest
           imagePullPolicy: Never
           envFrom:
+            - configMapRef:
+                name: user-config
             - secretRef:
                 name: user-secret
           volumeMounts:
@@ -34,8 +36,9 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            failureThreshold: 30
-            periodSeconds: 2
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 60
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
