@@ -2,6 +2,7 @@ package org.spring.divas.userservice.feature.user;
 
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.spring.divas.userservice.common.enums.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -31,7 +33,10 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Observed(name = "user.get", contextualName = "get-user")
     public UserResponseDto findById(Long id) {
-        return mapper.toResponseDto(repository.findById(id).orElseThrow());
+        log.info("Getting user by id={}", id);
+        User user = repository.findById(id).orElseThrow();
+        log.info("User found with id={}", id);
+        return mapper.toResponseDto(user);
     }
 
     @Override
