@@ -12,19 +12,39 @@ spec:
       labels:
         app: user-service
     spec:
+      automountServiceAccountToken: false
+
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+
       containers:
         - name: user-service-container
           image: user-service:latest
           imagePullPolicy: Never
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
           envFrom:
             - configMapRef:
                 name: user-config
             - secretRef:
                 name: user-secret
+
           volumeMounts:
             - name: jwt-keys
               mountPath: /app/config/jwt
               readOnly: true
+            - name: tmp
+              mountPath: /tmp
+
           resources:
             requests:
               cpu: 100m
@@ -32,21 +52,25 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
+
           startupProbe:
             httpGet:
-              path: /actuator/health/liveness
+              path: /api/actuator/health/liveness
               port: 8080
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 60
+
           livenessProbe:
             httpGet:
-              path: /actuator/health/liveness
+              path: /api/actuator/health/liveness
               port: 8080
+
           readinessProbe:
             httpGet:
-              path: /actuator/health/readiness
+              path: /api/actuator/health/readiness
               port: 8080
+
       volumes:
         - name: jwt-keys
           secret:
@@ -56,6 +80,9 @@ spec:
                 path: private.pem
               - key: public.pem
                 path: public.pem
+
+        - name: tmp
+          emptyDir: {}
 
 ---
 apiVersion: v1
@@ -67,3 +94,4 @@ spec:
     app: user-service
   ports:
     - port: 8080
+      targetPort: 8080

@@ -24,12 +24,29 @@ spec:
       labels:
         app: user-db
     spec:
+      automountServiceAccountToken: false
+
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70
+
       containers:
         - name: user-db-container
           image: postgres:18-alpine
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
           envFrom:
             - secretRef:
                 name: user-secret
+
           resources:
             requests:
               cpu: 50m
@@ -37,6 +54,7 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
+
           startupProbe:
             exec:
               command:
@@ -47,6 +65,7 @@ spec:
                 - $(POSTGRES_DB)
             periodSeconds: 2
             failureThreshold: 30
+
           readinessProbe:
             exec:
               command:
@@ -58,6 +77,7 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 5
             failureThreshold: 3
+
           livenessProbe:
             exec:
               command:
@@ -69,13 +89,25 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 7
+
           volumeMounts:
             - mountPath: /var/lib/postgresql
               name: user-db-data
+            - name: tmp
+              mountPath: /tmp
+            - name: postgres-socket
+              mountPath: /var/run/postgresql
+
       volumes:
         - name: user-db-data
           persistentVolumeClaim:
             claimName: user-db-data
+
+        - name: tmp
+          emptyDir: {}
+
+        - name: postgres-socket
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
