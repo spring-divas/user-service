@@ -3,7 +3,6 @@ package org.spring.divas.userservice.feature.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,6 +17,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.interfaces.RSAPublicKey;
+
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,16 +35,12 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers("/actuator/**").permitAll()
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers(POST, "/user/**").permitAll()
+                                .anyRequest().authenticated()
                 )
-                // .authorizeHttpRequests(auth -> auth
-                //         .requestMatchers("/actuator/**").permitAll()
-                //         .requestMatchers("/auth/**").permitAll()
-                //         .requestMatchers(POST, "/user/customer").permitAll()
-                //         .anyRequest().authenticated()
-                // )
-                .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(o -> o.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .build();
     }
 
