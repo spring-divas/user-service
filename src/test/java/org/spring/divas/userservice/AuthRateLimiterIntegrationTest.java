@@ -88,6 +88,9 @@ class AuthRateLimiterIntegrationTest {
         mockMvc.perform(register())
                 .andExpect(status().isTooManyRequests())
                 .andExpect(header().string(HttpHeaders.RETRY_AFTER, "5"));
+
+        mockMvc.perform(get("/actuator-other"))
+                .andExpect(status().isTooManyRequests());
     }
 
     private MockHttpServletRequestBuilder login() {
