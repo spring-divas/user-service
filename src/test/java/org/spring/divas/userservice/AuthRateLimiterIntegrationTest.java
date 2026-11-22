@@ -15,6 +15,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.net.URI;
+
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -71,6 +73,10 @@ class AuthRateLimiterIntegrationTest {
                 .andExpect(jsonPath("$.status").value(429))
                 .andExpect(jsonPath("$.title").value("Too Many Requests"));
 
+        mockMvc.perform(encodedLogin())
+                .andExpect(status().isTooManyRequests())
+                .andExpect(header().string(HttpHeaders.RETRY_AFTER, "60"));
+
         mockMvc.perform(get("/actuator/health"))
                 .andExpect(status().is(not(HttpStatus.TOO_MANY_REQUESTS.value())));
     }
@@ -86,6 +92,12 @@ class AuthRateLimiterIntegrationTest {
 
     private MockHttpServletRequestBuilder login() {
         return post("/auth/token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(AUTH_REQUEST_JSON);
+    }
+
+    private MockHttpServletRequestBuilder encodedLogin() {
+        return post(URI.create("/%61uth/token"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(AUTH_REQUEST_JSON);
     }
