@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDto updatePassword(Long id, ChangePasswordDto dto) {
         User user = repository.findById(id).orElseThrow();
-        user.setPassword(encoder.encode(dto.getNewPassword()));
+        user.setPassword(encoder.encode(dto.newPassword()));
         return mapper.toResponseDto(repository.save(user));
     }
 

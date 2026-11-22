@@ -36,9 +36,9 @@ public class VenueManagerServiceImpl implements VenueManagerService {
     @Override
     @Transactional
     public void update(VenueManagerUpdateDto dto) {
-        VenueManagerId id = new VenueManagerId(dto.getUserId(), dto.getVenueId());
+        VenueManagerId id = new VenueManagerId(dto.userId(), dto.venueId());
         VenueManager entity = repository.findById(id).orElseThrow();
-        entity.setManagerLevel(dto.getManagerLevel());
+        entity.setManagerLevel(dto.managerLevel());
         repository.save(entity);
     }
 
