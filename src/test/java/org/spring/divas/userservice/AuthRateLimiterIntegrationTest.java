@@ -33,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(TestJwtConfig.class)
 class AuthRateLimiterIntegrationTest {
 
-    private static final String AUTH_REQUEST_JSON = """
+    private static final String AUTH_REQUEST_JSON =
+            """
             {"email": "user@example.com", "password": "password123"}
             """;
 
