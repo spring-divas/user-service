@@ -13,6 +13,7 @@ val h2Version = "2.3.232"
 val logbackVersion = "9.0"
 val checkstyleVersion = "13.7.0"
 val chaosMonkeyVersion = "4.0.0"
+val resilience4jVersion = "2.4.0"
 
 group = "org.spring.divas"
 version = "0.0.1-SNAPSHOT"
@@ -46,6 +47,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-aspectj")
     implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
+    implementation("io.github.resilience4j:resilience4j-spring-boot4:$resilience4jVersion")
 
     implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
 
@@ -53,6 +55,7 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("au.com.dius.pact.provider:junit5:4.7.5")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testRuntimeOnly("com.h2database:h2:$h2Version")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
