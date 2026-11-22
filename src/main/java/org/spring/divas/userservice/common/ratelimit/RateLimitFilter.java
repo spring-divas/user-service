@@ -18,6 +18,9 @@ import java.io.IOException;
 @Component
 public class RateLimitFilter extends OncePerRequestFilter {
 
+    public static final String RATE_LIMITER_ATTRIBUTE =
+            RateLimitFilter.class.getName() + ".rateLimiter";
+
     private static final String ACTUATOR_PATH = "/actuator";
     private static final String AUTH_PATH = "/auth/";
 
@@ -55,6 +58,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
             return;
         }
 
+        request.setAttribute(RATE_LIMITER_ATTRIBUTE, rateLimiter);
         RequestNotPermitted exception = RequestNotPermitted.createRequestNotPermitted(rateLimiter);
         if (exceptionResolver.resolveException(request, response, null, exception) == null) {
             response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());

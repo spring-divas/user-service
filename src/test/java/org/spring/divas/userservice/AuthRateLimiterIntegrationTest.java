@@ -2,6 +2,7 @@ package org.spring.divas.userservice;
 
 import org.junit.jupiter.api.Test;
 import org.spring.divas.userservice.feature.auth.AuthService;
+import org.spring.divas.userservice.feature.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -26,7 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = {
         "resilience4j.ratelimiter.instances.authApi.limit-for-period=3",
         "resilience4j.ratelimiter.instances.authApi.limit-refresh-period=1m",
-        "resilience4j.ratelimiter.instances.authApi.timeout-duration=0s"
+        "resilience4j.ratelimiter.instances.authApi.timeout-duration=0s",
+        "resilience4j.ratelimiter.instances.userApi.limit-for-period=1",
+        "resilience4j.ratelimiter.instances.userApi.limit-refresh-period=4500ms",
+        "resilience4j.ratelimiter.instances.userApi.timeout-duration=0s"
 })
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -38,11 +42,20 @@ class AuthRateLimiterIntegrationTest {
             {"email": "user@example.com", "password": "password123"}
             """;
 
+    private static final String REGISTRATION_JSON =
+            """
+            {"firstName": "Test", "lastName": "User",
+             "email": "user@example.com", "password": "password123"}
+            """;
+
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
     private AuthService authService;
+
+    @MockitoBean
+    private UserService userService;
 
     @Test
     void shouldRejectLoginAttemptsWithProblemDetailWhenRateLimitIsExceeded() throws Exception {
@@ -54,7 +67,7 @@ class AuthRateLimiterIntegrationTest {
 
         mockMvc.perform(login())
                 .andExpect(status().isTooManyRequests())
-                .andExpect(header().string(HttpHeaders.RETRY_AFTER, "1"))
+                .andExpect(header().string(HttpHeaders.RETRY_AFTER, "60"))
                 .andExpect(jsonPath("$.status").value(429))
                 .andExpect(jsonPath("$.title").value("Too Many Requests"));
 
@@ -62,9 +75,24 @@ class AuthRateLimiterIntegrationTest {
                 .andExpect(status().is(not(HttpStatus.TOO_MANY_REQUESTS.value())));
     }
 
+    @Test
+    void shouldRoundUpRetryAfterToRefreshPeriodOfExhaustedLimiter() throws Exception {
+        mockMvc.perform(register()).andExpect(status().isOk());
+
+        mockMvc.perform(register())
+                .andExpect(status().isTooManyRequests())
+                .andExpect(header().string(HttpHeaders.RETRY_AFTER, "5"));
+    }
+
     private MockHttpServletRequestBuilder login() {
         return post("/auth/token")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(AUTH_REQUEST_JSON);
+    }
+
+    private MockHttpServletRequestBuilder register() {
+        return post("/user/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(REGISTRATION_JSON);
     }
 }
