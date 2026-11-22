@@ -1,0 +1,11 @@
+resilience4j:
+  ratelimiter:
+    instances:
+      userApi:
+        limit-for-period: 10
+        limit-refresh-period: 1s
+        timeout-duration: 0s
+      authApi:
+        limit-for-period: 5
+        limit-refresh-period: 10s
+        timeout-duration: 0s
