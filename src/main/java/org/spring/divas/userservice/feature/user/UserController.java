@@ -27,12 +27,14 @@ public class UserController {
 
     @PostMapping("/manager")
     public UserResponseDto createManager(@Valid @RequestBody UserCreateDto dto) {
+        AuthChecker.require(isAdmin());
         return userService.create(dto, UserRole.MANAGER);
     }
 
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDto createAdmin(@Valid @RequestBody UserCreateDto dto) {
+        AuthChecker.require(isAdmin());
         return userService.create(dto, UserRole.ADMIN);
     }
 
