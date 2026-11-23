@@ -17,6 +17,7 @@ services:
       - user-network
 
   user-service:
+
     build:
       context: .
       dockerfile: Dockerfile
@@ -40,10 +41,14 @@ services:
         condition: service_healthy
     networks:
       - user-network
+      - feedo
 
 volumes:
   user-db-data:
 
 networks:
   user-network:
+    driver: bridge
+  feedo:
+    name: feedo
     driver: bridge

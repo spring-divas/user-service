@@ -27,7 +27,7 @@ public class VenueManagerRole {
             ManagerRole parsedLevel = ManagerRole.valueOf(parts[0]);
             Long parsedVenueId = Long.parseLong(parts[1]);
             return new VenueManagerRole(parsedLevel, parsedVenueId);
-        } catch (Exception e) {
+        } catch (Exception _) {
             return null;
         }
     }

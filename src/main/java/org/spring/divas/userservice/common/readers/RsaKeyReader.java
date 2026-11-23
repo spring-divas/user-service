@@ -3,17 +3,23 @@ package org.spring.divas.userservice.common.readers;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 public class RsaKeyReader {
 
-    public static PublicKey readPublicKey(String path) throws Exception {
+    private RsaKeyReader() {
+        /* This utility class should not be instantiated */
+    }
+
+
+    public static PublicKey readPublicKey(String path)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         Resource publicKeyResource = new FileSystemResource(path);
         try (var in = publicKeyResource.getInputStream()) {
             String pem = new String(in.readAllBytes(), StandardCharsets.UTF_8);
@@ -27,7 +33,8 @@ public class RsaKeyReader {
         }
     }
 
-    public static PrivateKey readPrivateKey(String path) throws Exception {
+    public static PrivateKey readPrivateKey(String path)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         Resource privateKeyResource = new FileSystemResource(path);
         try (var in = privateKeyResource.getInputStream()) {
             String pem = new String(in.readAllBytes(), StandardCharsets.UTF_8);
