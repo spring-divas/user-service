@@ -25,7 +25,7 @@ class VenueManagerServiceImplTest {
 
     @Test
     void createInsertsMappedManager() {
-        VenueManagerCreateDto request = new VenueManagerCreateDto();
+        VenueManagerCreateDto request = new VenueManagerCreateDto(3L, 8L, ManagerRole.SENIOR);
         VenueManager manager = VenueManager.builder().userId(3L).venueId(8L)
                 .managerLevel(ManagerRole.SENIOR).build();
         when(mapper.toEntity(request)).thenReturn(manager);
@@ -38,7 +38,7 @@ class VenueManagerServiceImplTest {
 
     @Test
     void createThrowsWhenManagerAlreadyExists() {
-        VenueManagerCreateDto request = new VenueManagerCreateDto();
+        VenueManagerCreateDto request = new VenueManagerCreateDto(3L, 8L, ManagerRole.SENIOR);
         VenueManager manager = VenueManager.builder().userId(3L).venueId(8L)
                 .managerLevel(ManagerRole.SENIOR).build();
         when(mapper.toEntity(request)).thenReturn(manager);
@@ -52,8 +52,7 @@ class VenueManagerServiceImplTest {
     void findsAndMapsManagersByUserAndVenue() {
         VenueManager manager = VenueManager.builder().userId(3L).venueId(8L)
                 .managerLevel(ManagerRole.JUNIOR).build();
-        VenueManagerResponseDto response = VenueManagerResponseDto.builder()
-                .userId(3L).venueId(8L).managerLevel(ManagerRole.JUNIOR).build();
+        VenueManagerResponseDto response = new VenueManagerResponseDto(3L, 8L, ManagerRole.JUNIOR);
         when(repository.findByUserIdAndVenueId(3L, 8L)).thenReturn(List.of(manager));
         when(mapper.toResponseDto(manager)).thenReturn(response);
 
@@ -64,10 +63,7 @@ class VenueManagerServiceImplTest {
     void updateChangesManagerLevelAndSaves() {
         final VenueManager entity = VenueManager.builder().userId(3L).venueId(8L)
                 .managerLevel(ManagerRole.JUNIOR).build();
-        VenueManagerUpdateDto request = new VenueManagerUpdateDto();
-        request.setUserId(3L);
-        request.setVenueId(8L);
-        request.setManagerLevel(ManagerRole.SENIOR);
+        VenueManagerUpdateDto request = new VenueManagerUpdateDto(3L, 8L, ManagerRole.SENIOR);
         when(repository.findById(new VenueManagerId(3L, 8L))).thenReturn(Optional.of(entity));
 
         service.update(request);
@@ -78,10 +74,7 @@ class VenueManagerServiceImplTest {
 
     @Test
     void updateThrowsWhenManagerDoesNotExist() {
-        VenueManagerUpdateDto request = new VenueManagerUpdateDto();
-        request.setUserId(3L);
-        request.setVenueId(8L);
-        request.setManagerLevel(ManagerRole.SENIOR);
+        VenueManagerUpdateDto request = new VenueManagerUpdateDto(3L, 8L, ManagerRole.SENIOR);
         when(repository.findById(new VenueManagerId(3L, 8L))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.update(request))
