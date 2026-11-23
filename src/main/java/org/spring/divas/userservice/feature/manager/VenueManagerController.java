@@ -23,7 +23,7 @@ public class VenueManagerController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@Valid @RequestBody VenueManagerCreateDto dto) {
-        AuthChecker.require(either(isAdmin(), isManager(dto.getVenueId(), ManagerRole.SENIOR)));
+        AuthChecker.require(either(isAdmin(), isManager(dto.venueId(), ManagerRole.SENIOR)));
         service.create(dto);
     }
 
@@ -38,7 +38,7 @@ public class VenueManagerController {
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody VenueManagerUpdateDto dto) {
-        AuthChecker.require(either(isAdmin(), isManager(dto.getVenueId(), ManagerRole.SENIOR)));
+        AuthChecker.require(either(isAdmin(), isManager(dto.venueId(), ManagerRole.SENIOR)));
         service.update(dto);
     }
 

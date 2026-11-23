@@ -50,12 +50,7 @@ class UserPactVerificationTest {
     }
 
     private UserResponseDto user() {
-        UserResponseDto user = new UserResponseDto();
-        user.setId(123L);
-        user.setFirstName("Oksana");
-        user.setLastName("Stepanenko");
-        user.setEmail("oksana@example.com");
-        user.setRole(UserRole.CUSTOMER);
-        return user;
+        return new UserResponseDto(
+                123L, "Oksana", "Stepanenko", "oksana@example.com", UserRole.CUSTOMER);
     }
 }

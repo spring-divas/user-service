@@ -59,9 +59,9 @@ class ServiceIntegrationTest {
         UserResponseDto created = userService.create(
                 user("Alice", "Jones", "alice@example.com", "password-123"), UserRole.CUSTOMER);
 
-        assertThat(created.getId()).isNotNull();
-        assertThat(created.getRole()).isEqualTo(UserRole.CUSTOMER);
-        assertThat(userRepository.findById(created.getId())).get()
+        assertThat(created.id()).isNotNull();
+        assertThat(created.role()).isEqualTo(UserRole.CUSTOMER);
+        assertThat(userRepository.findById(created.id())).get()
                 .satisfies(persisted -> {
                     assertThat(persisted.getFirstName()).isEqualTo("Alice");
                     assertThat(persisted.getEmail()).isEqualTo("alice@example.com");
@@ -69,22 +69,18 @@ class ServiceIntegrationTest {
                             .isTrue();
                 });
 
-        UserUpdateDto update = new UserUpdateDto();
-        update.setFirstName("Alicia");
-        update.setLastName("Jones");
-        update.setEmail("alicia@example.com");
-        UserResponseDto updated = userService.update(created.getId(), update);
-        assertThat(updated.getFirstName()).isEqualTo("Alicia");
-        assertThat(updated.getEmail()).isEqualTo("alicia@example.com");
+        UserUpdateDto update = new UserUpdateDto("Alicia", "Jones", "alicia@example.com");
+        UserResponseDto updated = userService.update(created.id(), update);
+        assertThat(updated.firstName()).isEqualTo("Alicia");
+        assertThat(updated.email()).isEqualTo("alicia@example.com");
 
-        ChangePasswordDto password = new ChangePasswordDto();
-        password.setNewPassword("replacement-456");
-        userService.updatePassword(created.getId(), password);
+        ChangePasswordDto password = new ChangePasswordDto("replacement-456");
+        userService.updatePassword(created.id(), password);
         assertThat(passwordEncoder.matches("replacement-456",
-                userRepository.findById(created.getId()).orElseThrow().getPassword())).isTrue();
+                userRepository.findById(created.id()).orElseThrow().getPassword())).isTrue();
 
-        userService.delete(created.getId());
-        assertThat(userRepository.findById(created.getId())).isEmpty();
+        userService.delete(created.id());
+        assertThat(userRepository.findById(created.id())).isEmpty();
     }
 
     @Test
@@ -110,17 +106,14 @@ class ServiceIntegrationTest {
                 .managerLevel(ManagerRole.JUNIOR).build());
         assertThat(venueManagerService.findAllByUserAndVenueId(51L, 7L))
                 .singleElement()
-                .satisfies(result -> assertThat(result.getManagerLevel())
+                .satisfies(result -> assertThat(result.managerLevel())
                         .isEqualTo(ManagerRole.JUNIOR));
 
-        VenueManagerUpdateDto update = new VenueManagerUpdateDto();
-        update.setUserId(51L);
-        update.setVenueId(7L);
-        update.setManagerLevel(ManagerRole.SENIOR);
+        VenueManagerUpdateDto update = new VenueManagerUpdateDto(51L, 7L, ManagerRole.SENIOR);
         venueManagerService.update(update);
         assertThat(venueManagerService.findAllByUserAndVenueId(51L, 7L))
                 .singleElement()
-                .satisfies(result -> assertThat(result.getManagerLevel())
+                .satisfies(result -> assertThat(result.managerLevel())
                         .isEqualTo(ManagerRole.SENIOR));
 
         venueManagerRepository.save(VenueManager.builder().userId(51L).venueId(8L)
@@ -135,20 +128,18 @@ class ServiceIntegrationTest {
     void authenticationIssuesVerifiableJwtWithPersistedManagerRoles() {
         UserResponseDto created = userService.create(
                 user("Morgan", "Manager", "morgan@example.com", "password-789"), UserRole.MANAGER);
-        venueManagerRepository.save(VenueManager.builder().userId(created.getId()).venueId(17L)
+        venueManagerRepository.save(VenueManager.builder().userId(created.id()).venueId(17L)
                 .managerLevel(ManagerRole.SENIOR).build());
-        venueManagerRepository.save(VenueManager.builder().userId(created.getId()).venueId(18L)
+        venueManagerRepository.save(VenueManager.builder().userId(created.id()).venueId(18L)
                 .managerLevel(ManagerRole.JUNIOR).build());
 
-        AuthRequest request = new AuthRequest();
-        request.setEmail("morgan@example.com");
-        request.setPassword("password-789");
+        AuthRequest request = new AuthRequest("morgan@example.com", "password-789");
 
         String token = authService.authenticate(request);
         JwtDecoder decoder = NimbusJwtDecoder.withPublicKey(publicKey).build();
         Jwt jwt = decoder.decode(token);
 
-        assertThat(jwt.getSubject()).isEqualTo(created.getId().toString());
+        assertThat(jwt.getSubject()).isEqualTo(created.id().toString());
         assertThat(jwt.getClaims().get("iss")).isEqualTo("user-service");
         assertThat(jwt.getClaimAsStringList("roles"))
                 .containsExactlyInAnyOrder("MANAGER", "SENIOR 17", "JUNIOR 18");
@@ -158,12 +149,7 @@ class ServiceIntegrationTest {
     private static UserCreateDto user(
             String firstName, String lastName, String email, String password
     ) {
-        UserCreateDto dto = new UserCreateDto();
-        dto.setFirstName(firstName);
-        dto.setLastName(lastName);
-        dto.setEmail(email);
-        dto.setPassword(password);
-        return dto;
+        return new UserCreateDto(firstName, lastName, email, password);
     }
 
 }

@@ -97,7 +97,8 @@ class AuthServiceTest {
         when(userRepository.findByEmail("missing@example.com")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.authenticate(request("missing@example.com", "secret")))
-                .isInstanceOf(java.util.NoSuchElementException.class);
+                .isInstanceOf(BadCredentialsException.class)
+                .hasMessage("Invalid username or password");
 
         verify(passwordEncoder, never()).matches(org.mockito.ArgumentMatchers.anyString(),
                 org.mockito.ArgumentMatchers.anyString());
@@ -112,9 +113,6 @@ class AuthServiceTest {
     }
 
     private static AuthRequest request(String email, String password) {
-        AuthRequest request = new AuthRequest();
-        request.setEmail(email);
-        request.setPassword(password);
-        return request;
+        return new AuthRequest(email, password);
     }
 }

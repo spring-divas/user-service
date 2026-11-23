@@ -25,9 +25,10 @@ class UserServiceImplTest {
 
     @Test
     void createAssignsRoleAndReturnsSavedUser() {
-        UserCreateDto request = new UserCreateDto();
+        UserCreateDto request =
+                new UserCreateDto("Test", "User", "user@example.com", "password123");
         User user = new User();
-        UserResponseDto response = new UserResponseDto();
+        UserResponseDto response = userResponse();
         when(mapper.toEntity(request)).thenReturn(user);
         when(repository.save(user)).thenReturn(user);
         when(mapper.toResponseDto(user)).thenReturn(response);
@@ -41,7 +42,7 @@ class UserServiceImplTest {
     @Test
     void findByIdMapsTheFoundUser() {
         User user = new User();
-        UserResponseDto response = new UserResponseDto();
+        UserResponseDto response = userResponse();
         when(repository.findById(7L)).thenReturn(Optional.of(user));
         when(mapper.toResponseDto(user)).thenReturn(response);
 
@@ -60,8 +61,8 @@ class UserServiceImplTest {
     void findAllMapsEveryUser() {
         User first = new User();
         User second = new User();
-        UserResponseDto firstResponse = new UserResponseDto();
-        UserResponseDto secondResponse = new UserResponseDto();
+        UserResponseDto firstResponse = userResponse();
+        UserResponseDto secondResponse = userResponse();
         when(repository.findAll()).thenReturn(List.of(first, second));
         when(mapper.toResponseDto(first)).thenReturn(firstResponse);
         when(mapper.toResponseDto(second)).thenReturn(secondResponse);
@@ -72,8 +73,8 @@ class UserServiceImplTest {
     @Test
     void updateMutatesAndSavesExistingUser() {
         User user = new User();
-        UserUpdateDto request = new UserUpdateDto();
-        UserResponseDto response = new UserResponseDto();
+        UserUpdateDto request = new UserUpdateDto("Test", "User", "user@example.com");
+        UserResponseDto response = userResponse();
         when(repository.findById(7L)).thenReturn(Optional.of(user));
         when(repository.save(user)).thenReturn(user);
         when(mapper.toResponseDto(user)).thenReturn(response);
@@ -87,12 +88,11 @@ class UserServiceImplTest {
     @Test
     void updatePasswordEncodesTheNewPassword() {
         User user = new User();
-        ChangePasswordDto request = new ChangePasswordDto();
-        request.setNewPassword("new-password");
+        final ChangePasswordDto request = new ChangePasswordDto("new-password");
         when(repository.findById(7L)).thenReturn(Optional.of(user));
         when(encoder.encode("new-password")).thenReturn("encoded-password");
         when(repository.save(user)).thenReturn(user);
-        when(mapper.toResponseDto(user)).thenReturn(new UserResponseDto());
+        when(mapper.toResponseDto(user)).thenReturn(userResponse());
 
         service.updatePassword(7L, request);
 
@@ -107,5 +107,9 @@ class UserServiceImplTest {
         service.delete(7L);
 
         verify(repository).deleteById(7L);
+    }
+
+    private static UserResponseDto userResponse() {
+        return new UserResponseDto(7L, "Test", "User", "user@example.com", UserRole.CUSTOMER);
     }
 }

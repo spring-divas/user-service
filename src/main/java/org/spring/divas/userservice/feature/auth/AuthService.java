@@ -26,11 +26,11 @@ public class AuthService {
 
     public String authenticate(AuthRequest request) {
         User user = userRepository
-                .findByEmail(request.email)
-                .orElseThrow();
+                .findByEmail(request.email())
+                .orElseThrow(AuthService::invalidCredentials);
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid username or password");
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw invalidCredentials();
         }
 
         return jwtService.generateAccessToken(
@@ -49,5 +49,9 @@ public class AuthService {
                             .map(VenueManagerRole::toString)
             ).toList();
         };
+    }
+
+    private static BadCredentialsException invalidCredentials() {
+        return new BadCredentialsException("Invalid username or password");
     }
 }
