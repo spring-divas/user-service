@@ -34,7 +34,6 @@ public class UserController {
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDto createAdmin(@Valid @RequestBody UserCreateDto dto) {
-        AuthChecker.require(isAdmin());
         return userService.create(dto, UserRole.ADMIN);
     }
 

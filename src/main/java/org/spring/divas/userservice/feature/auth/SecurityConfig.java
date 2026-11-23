@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(POST, "/user/customer").permitAll()
+                        .requestMatchers(POST, "/user/admin").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(o ->
                         o.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))

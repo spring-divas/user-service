@@ -48,17 +48,18 @@ class UserRegistrationSecurityIntegrationTest {
     }
 
     @Test
-    void shouldRejectAnonymousAdminOrManagerRegistration() throws Exception {
-        mockMvc.perform(register("/user/admin")).andExpect(status().isUnauthorized());
+    void shouldAllowAnonymousAdminRegistrationAndRejectAnonymousManagerRegistration()
+            throws Exception {
+        mockMvc.perform(register("/user/admin")).andExpect(status().isCreated());
         mockMvc.perform(register("/user/manager")).andExpect(status().isUnauthorized());
     }
 
     @Test
-    void shouldForbidCustomerFromCreatingAdminOrManager() throws Exception {
+    void shouldAllowCustomerToCreateAdminButForbidManagerCreation() throws Exception {
         String token = token("CUSTOMER");
 
         mockMvc.perform(register("/user/admin").header("Authorization", "Bearer " + token))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isCreated());
         mockMvc.perform(register("/user/manager").header("Authorization", "Bearer " + token))
                 .andExpect(status().isForbidden());
     }
