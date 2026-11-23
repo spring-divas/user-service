@@ -36,7 +36,7 @@ class GlobalExceptionHandlerIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    void loginWithUnknownEmailReturnsUnauthorizedProblemDetail() throws Exception {
+    void shouldReturnUnauthorizedProblemDetailForUnknownEmailLogin() throws Exception {
         mockMvc.perform(post("/auth/token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(UNKNOWN_USER_LOGIN_JSON))
@@ -48,7 +48,7 @@ class GlobalExceptionHandlerIntegrationTest {
     }
 
     @Test
-    void invalidRegistrationReturnsValidationErrors() throws Exception {
+    void shouldReturnValidationErrorsForInvalidRegistration() throws Exception {
         mockMvc.perform(post("/user/customer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(INVALID_REGISTRATION_JSON))
@@ -61,7 +61,7 @@ class GlobalExceptionHandlerIntegrationTest {
     }
 
     @Test
-    void missingUserReturnsNotFoundProblemDetail() throws Exception {
+    void shouldReturnNotFoundProblemDetailForMissingUser() throws Exception {
         mockMvc.perform(get("/user/{id}", 999_999L))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.title").value("Resource Not Found"))
