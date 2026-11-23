@@ -23,6 +23,7 @@ import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @RequiredArgsConstructor
+@SuppressWarnings("java:S4502") // Stateless JWT API without cookie-based authentication
 public class SecurityConfig {
 
     @Bean
