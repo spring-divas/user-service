@@ -6,6 +6,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class UserAuthorizerFactory {
 
+    private UserAuthorizerFactory() {
+        /* This utility class should not be instantiated */
+    }
+
+
     public static UserAuthorizer isUser(Long userId) {
         Authentication auth = SecurityContextHolder
                 .getContext()

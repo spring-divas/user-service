@@ -14,6 +14,7 @@ val logbackVersion = "9.0"
 val checkstyleVersion = "13.7.0"
 val chaosMonkeyVersion = "4.0.0"
 val resilience4jVersion = "2.4.0"
+val pactProviderVersion = "4.7.5"
 
 group = "org.spring.divas"
 version = "0.0.1-SNAPSHOT"
@@ -54,7 +55,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql:$postgresqlVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("au.com.dius.pact.provider:junit5:4.7.5")
+    testImplementation("au.com.dius.pact.provider:junit5:$pactProviderVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testRuntimeOnly("com.h2database:h2:$h2Version")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

@@ -9,6 +9,11 @@ import java.util.stream.Stream;
 
 public class AuthorizerCombinationFactory {
 
+    private AuthorizerCombinationFactory() {
+        /* This utility class should not be instantiated */
+    }
+
+
     public static Authorizer both(Authorizer a1, Authorizer a2) {
         Objects.requireNonNull(a1);
         Objects.requireNonNull(a2);

@@ -6,6 +6,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AdminAuthorizerFactory {
 
+    private AdminAuthorizerFactory() {
+        /* This utility class should not be instantiated */
+    }
+
+
     public static AdminAuthorizer isAdmin() {
         Authentication auth = SecurityContextHolder
                 .getContext()
