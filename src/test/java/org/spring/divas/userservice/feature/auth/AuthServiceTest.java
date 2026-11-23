@@ -84,7 +84,8 @@ class AuthServiceTest {
         when(userRepository.findByEmail("customer@example.com")).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("wrong", "encoded-secret")).thenReturn(false);
 
-        assertThatThrownBy(() -> service.authenticate(request("customer@example.com", "wrong")))
+        AuthRequest wrongPasswordRequest = request("customer@example.com", "wrong");
+        assertThatThrownBy(() -> service.authenticate(wrongPasswordRequest))
                 .isInstanceOf(BadCredentialsException.class)
                 .hasMessage("Invalid username or password");
 
@@ -96,7 +97,8 @@ class AuthServiceTest {
     void authenticateRejectsUnknownEmail() {
         when(userRepository.findByEmail("missing@example.com")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.authenticate(request("missing@example.com", "secret")))
+        AuthRequest missingUserRequest = request("missing@example.com", "secret");
+        assertThatThrownBy(() -> service.authenticate(missingUserRequest))
                 .isInstanceOf(BadCredentialsException.class)
                 .hasMessage("Invalid username or password");
 
