@@ -35,7 +35,7 @@ public class TestJwtConfig {
     public JwtEncoder jwtEncoder() {
         RSAKey rsaKey = new RSAKey.Builder(publicKey())
                 .privateKey(privateKey())
-                .keyID("test-key")
+                .keyID("auth-key-1")
                 .build();
 
         JWKSource<SecurityContext> jwkSource =
