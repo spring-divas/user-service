@@ -41,7 +41,7 @@ class JwtServiceTest {
                 ArgumentCaptor.forClass(JwtEncoderParameters.class);
         verify(jwtEncoder).encode(captor.capture());
         JwtClaimsSet claims = captor.getValue().getClaims();
-        assertThat(claims.getClaims().get("iss")).isEqualTo("user-service");
+        assertThat(claims.getClaims()).containsEntry("iss", "user-service");
         assertThat(claims.getSubject()).isEqualTo("42");
         assertThat(claims.getIssuedAt()).isNotNull();
         assertThat(claims.getExpiresAt()).isEqualTo(claims.getIssuedAt().plusSeconds(900));

@@ -120,7 +120,7 @@ class ServiceIntegrationTest {
                 .managerLevel(ManagerRole.JUNIOR).build());
         venueManagerService.delete(51L, 7L);
         assertThat(venueManagerRepository.findByUserId(51L))
-                .extracting(manager -> manager.getVenueId())
+                .extracting(VenueManager::getVenueId)
                 .containsExactly(8L);
     }
 
@@ -140,7 +140,7 @@ class ServiceIntegrationTest {
         Jwt jwt = decoder.decode(token);
 
         assertThat(jwt.getSubject()).isEqualTo(created.id().toString());
-        assertThat(jwt.getClaims().get("iss")).isEqualTo("user-service");
+        assertThat(jwt.getClaims()).containsEntry("iss", "user-service");
         assertThat(jwt.getClaimAsStringList("roles"))
                 .containsExactlyInAnyOrder("MANAGER", "SENIOR 17", "JUNIOR 18");
         assertThat(jwt.getExpiresAt()).isAfter(jwt.getIssuedAt());

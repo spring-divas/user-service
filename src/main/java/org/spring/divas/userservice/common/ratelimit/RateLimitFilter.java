@@ -23,7 +23,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
             RateLimitFilter.class.getName() + ".rateLimiter";
 
     private static final String ACTUATOR_PATH = "/actuator";
-    private static final String AUTH_PATH = "/auth/";
+    private static final String AUTH_PATH = "/auth";
 
     private final RateLimiter userRateLimiter;
     private final RateLimiter authRateLimiter;

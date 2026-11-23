@@ -12,8 +12,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 
 import static org.spring.divas.userservice.common.readers.RsaKeyReader.readPrivateKey;
 import static org.spring.divas.userservice.common.readers.RsaKeyReader.readPublicKey;
@@ -29,7 +32,8 @@ public class JwtConfig {
     private String publicKeyPath;
 
     @Bean
-    public JwtEncoder jwtEncoder() throws Exception {
+    public JwtEncoder jwtEncoder()
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         PrivateKey privateKey = readPrivateKey(privateKeyPath);
         RSAKey rsaKey = new RSAKey.Builder(publicKey())
                 .privateKey(privateKey)
@@ -41,7 +45,8 @@ public class JwtConfig {
     }
 
     @Bean
-    public RSAPublicKey publicKey() throws Exception {
+    public RSAPublicKey publicKey()
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         return (RSAPublicKey) readPublicKey(publicKeyPath);
     }
 }
